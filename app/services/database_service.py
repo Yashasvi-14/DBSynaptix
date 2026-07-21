@@ -1,4 +1,5 @@
-from app.database.connection import create_connection, get_tables
+from app.database.connection import create_connection, get_tables, get_columns, get_foreign_keys, get_primary_keys
+from app.database.schema_builder import assemble_schema
 from app.schemas.database import DatabaseConnectionRequest
 from app.schemas.response import ApiResponse
 
@@ -20,12 +21,23 @@ class DatabaseService:
         connection = create_connection(request)
 
         try:
-            tables = get_tables(connection)
+            columns = get_columns(connection)
+
+            primary_keys = get_primary_keys(connection)
+
+            foreign_keys = get_foreign_keys(connection)
+
+            schema = assemble_schema(
+                columns,
+                primary_keys,
+                foreign_keys
+            )
+
 
             return ApiResponse(
                 success=True,
                 message="Schema retrieved successfully",
-                data=tables
+                data=schema
             )
 
         finally:
