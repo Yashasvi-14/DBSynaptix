@@ -1,14 +1,21 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+*.pyd
 *.pyo
 
 # Virtual Environment
 venv/
 .venv/
+env/
 
 # Environment variables
 .env
+.env.*
+
+!.env.example
 
 # VS Code
 .vscode/
@@ -22,6 +29,30 @@ Thumbs.db
 
 # Python cache
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
 # Logs
 *.log
+
+# Build
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node.js
+node_modules/
+.next/
+out/
+coverage/
+
+# Misc
+*.sqlite3
+*.db
+
+# Generated application data
+data/*.json
