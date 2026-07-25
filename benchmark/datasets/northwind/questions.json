@@ -1,0 +1,142 @@
+[
+  {
+    "id": "NW-001",
+    "category": "simple_retrieval",
+    "difficulty": "easy",
+    "enabled": true,
+    "question": "List all customers."
+  },
+  {
+    "id": "NW-002",
+    "category": "simple_retrieval",
+    "difficulty": "easy",
+    "enabled": true,
+    "question": "Show all product names."
+  },
+  {
+    "id": "NW-003",
+    "category": "simple_retrieval",
+    "difficulty": "easy",
+    "enabled": true,
+    "question": "List all suppliers."
+  },
+  {
+    "id": "NW-004",
+    "category": "simple_retrieval",
+    "difficulty": "easy",
+    "enabled": true,
+    "question": "Show all categories."
+  },
+  {
+    "id": "NW-005",
+    "category": "filtering",
+    "difficulty": "easy",
+    "enabled": true,
+    "question": "List customers from Germany."
+  },
+  {
+    "id": "NW-006",
+    "category": "filtering",
+    "difficulty": "medium",
+    "enabled": true,
+    "question": "Show discontinued products."
+  },
+  {
+    "id": "NW-007",
+    "category": "filtering",
+    "difficulty": "medium",
+    "enabled": true,
+    "question": "Show the 10 most expensive products."
+  },
+  {
+    "id": "NW-008",
+    "category": "filtering",
+    "difficulty": "medium",
+    "enabled": true,
+    "question": "List products with a unit price greater than 20."
+  },
+  {
+    "id": "NW-009",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "enabled": true,
+    "question": "How many products are there in each category?"
+  },
+  {
+    "id": "NW-010",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "enabled": true,
+    "question": "What is the average product price by category?"
+  },
+  {
+    "id": "NW-011",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "enabled": true,
+    "question": "Count the number of orders for each customer."
+  },
+  {
+    "id": "NW-012",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "enabled": true,
+    "question": "Which supplier provides the most products?"
+  },
+  {
+    "id": "NW-013",
+    "category": "joins",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "Show customer names with their orders."
+  },
+  {
+    "id": "NW-014",
+    "category": "joins",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "List products with their category names."
+  },
+  {
+    "id": "NW-015",
+    "category": "joins",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "Show each order with the employee who handled it."
+  },
+  {
+    "id": "NW-016",
+    "category": "joins",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "Display supplier names for each product."
+  },
+  {
+    "id": "NW-017",
+    "category": "analytics",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "Show the top 10 customers by total sales."
+  },
+  {
+    "id": "NW-018",
+    "category": "analytics",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "Which categories generate the highest revenue?"
+  },
+  {
+    "id": "NW-019",
+    "category": "analytics",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "Which employees processed the most orders?"
+  },
+  {
+    "id": "NW-020",
+    "category": "analytics",
+    "difficulty": "hard",
+    "enabled": true,
+    "question": "Show monthly sales revenue."
+  }
+]
