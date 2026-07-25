@@ -7,7 +7,7 @@ class DatabaseService:
 
     def connect(self, request: DatabaseConnectionRequest):
 
-        connection = create_connection(request)
+        connection = self.get_connection(request)
 
         connection.close()
 
@@ -18,7 +18,7 @@ class DatabaseService:
     
     def get_schema(self, request: DatabaseConnectionRequest):
 
-        connection = create_connection(request)
+        connection = self.get_connection(request)
 
         try:
             columns = get_columns(connection)
@@ -42,3 +42,14 @@ class DatabaseService:
 
         finally:
             connection.close()
+
+
+    def get_connection(
+        self,
+        request: DatabaseConnectionRequest
+    ):
+        """
+        Create and return a PostgreSQL connection.
+        """
+
+        return create_connection(request)
