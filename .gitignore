@@ -56,3 +56,6 @@ coverage/
 
 # Generated application data
 data/*.json
+
+# Benchmark generated output
+benchmark/results.csv
