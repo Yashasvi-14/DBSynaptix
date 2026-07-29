@@ -8,44 +8,31 @@ from app.main import app
 client = TestClient(app)
 
 
-def main():
+def test_existing_index():
 
     fake_documents = [
-        {
-            "table": "customers",
-            "text": "TABLE: customers",
-            "embedding": [0.1, 0.2, 0.3]
-        },
-        {
-            "table": "orders",
-            "text": "TABLE: orders",
-            "embedding": [0.4, 0.5, 0.6]
-        }
+        {"table": "customers"},
+        {"table": "orders"}
     ]
 
     with patch(
         "app.routers.database.IndexingService"
     ) as MockIndexingService:
 
-        indexing_service = (
-            MockIndexingService.return_value
-        )
+        service = MockIndexingService.return_value
 
-        indexing_service.build_index.return_value = (
-            fake_documents
-        )
-
-        payload = {
-            "host": "localhost",
-            "port": 5432,
-            "database": "northwind",
-            "username": "postgres",
-            "password": "test-password"
-        }
+        service.index_exists.return_value = True
+        service.load_index.return_value = fake_documents
 
         response = client.post(
             "/database/index",
-            json=payload
+            json={
+                "host": "localhost",
+                "port": 5432,
+                "database": "northwind",
+                "username": "postgres",
+                "password": "test-password"
+            }
         )
 
         assert response.status_code == 200
@@ -53,30 +40,80 @@ def main():
         data = response.json()
 
         assert data["success"] is True
-
-        assert (
-            data["message"]
-            == "Database indexed successfully"
-        )
-
         assert data["data"]["indexed_tables"] == 2
+        assert data["data"]["reused"] is True
 
-        indexing_service.build_index.assert_called_once()
-
-        call = (
-            indexing_service
-            .build_index
-            .call_args
+        service.index_exists.assert_called_once_with(
+            "northwind"
         )
 
-        request = call.args[0]
+        service.load_index.assert_called_once_with(
+            "northwind"
+        )
 
-        assert request.host == "localhost"
-        assert request.port == 5432
-        assert request.database == "northwind"
-        assert request.username == "postgres"
+        service.build_index.assert_not_called()
 
-    print("Database index router test passed.")
+
+def test_missing_index():
+
+    fake_documents = [
+        {"table": "customers"},
+        {"table": "orders"},
+        {"table": "products"}
+    ]
+
+    with patch(
+        "app.routers.database.IndexingService"
+    ) as MockIndexingService:
+
+        service = MockIndexingService.return_value
+
+        service.index_exists.return_value = False
+        service.build_index.return_value = fake_documents
+
+        response = client.post(
+            "/database/index",
+            json={
+                "host": "localhost",
+                "port": 5432,
+                "database": "new_database",
+                "username": "postgres",
+                "password": "test-password"
+            }
+        )
+
+        assert response.status_code == 200
+
+        data = response.json()
+
+        assert data["success"] is True
+        assert data["data"]["indexed_tables"] == 3
+        assert data["data"]["reused"] is False
+
+        service.index_exists.assert_called_once_with(
+            "new_database"
+        )
+
+        service.build_index.assert_called_once()
+
+        request = service.build_index.call_args.args[0]
+
+        assert request.database == "new_database"
+
+        service.load_index.assert_not_called()
+
+
+def main():
+
+    test_existing_index()
+
+    print("Existing index reuse test passed.")
+
+    test_missing_index()
+
+    print("Missing index build test passed.")
+
+    print("Database index router tests passed.")
 
 
 if __name__ == "__main__":

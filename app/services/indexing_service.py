@@ -85,7 +85,7 @@ class IndexingService:
         )
         return index_store.load()
 
-       
+
     def get_index_store(
         self,
         database_name
@@ -97,3 +97,13 @@ class IndexingService:
         return IndexStore(
             path=f"data/indexes/{database_name}.json"
         )
+
+    def index_exists(
+        self,
+        database_name
+    ):
+        index_store = self.get_index_store(
+            database_name
+        )
+
+        return index_store.exists()
