@@ -62,3 +62,4 @@ benchmark/results.csv
 
 # Generated database indexes
 data/index.json
+data/indexes/

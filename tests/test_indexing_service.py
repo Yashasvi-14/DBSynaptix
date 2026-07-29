@@ -7,12 +7,20 @@ def main():
 
     service = IndexingService()
 
-    service.index_store = MagicMock()
-
+    # Fake database request
     request = MagicMock()
+    request.database = "northwind"
 
-   
+    # Fake database-specific index store
+    mock_store = MagicMock()
+
+    service.get_index_store = MagicMock(
+        return_value=mock_store
+    )
+
+    # ==========================================================
     # Fake pipeline data
+    # ==========================================================
 
     schema = {
         "customers": {
@@ -41,8 +49,9 @@ def main():
         }
     ]
 
-    
-    # Mock each indexing stage
+    # ==========================================================
+    # Mock indexing stages
+    # ==========================================================
 
     schema_response = MagicMock()
     schema_response.data = schema
@@ -63,27 +72,41 @@ def main():
         return_value=embedded_documents
     )
 
-    
+    # ==========================================================
     # Build index
+    # ==========================================================
 
     result = service.build_index(request)
 
-    service.index_store.save.assert_called_once_with(
+    assert result == embedded_documents
+
+    # Correct database-specific store should be selected
+    service.get_index_store.assert_called_with(
+        "northwind"
+    )
+
+    # Completed index should be persisted
+    mock_store.save.assert_called_once_with(
         embedded_documents
     )
 
-    service.index_store.load.return_value = embedded_documents
+    # ==========================================================
+    # Load index
+    # ==========================================================
 
-    loaded = service.load_index()
+    mock_store.load.return_value = embedded_documents
+
+    loaded = service.load_index(
+        "northwind"
+    )
 
     assert loaded == embedded_documents
 
-    service.index_store.load.assert_called_once()
+    mock_store.load.assert_called_once_with()
 
-    assert result == embedded_documents
-
-    
-    # Verify pipeline order/data flow
+    # ==========================================================
+    # Verify indexing pipeline
+    # ==========================================================
 
     service.database_service.get_schema.assert_called_once_with(
         request
@@ -107,3 +130,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

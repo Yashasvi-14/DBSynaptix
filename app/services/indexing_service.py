@@ -33,7 +33,6 @@ class IndexingService:
 
         self.embedding_builder = EmbeddingBuilder()
 
-        self.index_store = IndexStore()
 
     def build_index(
         self,
@@ -67,13 +66,34 @@ class IndexingService:
         )
 
         # Persist the completed index
-        self.index_store.save(documents)
+        index_store = self.get_index_store(
+            request.database
+        )
+        index_store.save(documents)
 
         return documents
 
-    def load_index(self):
+    def load_index(
+            self,
+            database_name
+        ):
         """
         Load the previously generated semantic index.
         """
+        index_store = self.get_index_store(
+            database_name
+        )
+        return index_store.load()
 
-        return self.index_store.load()
+       
+    def get_index_store(
+        self,
+        database_name
+    ):
+        """
+        Return the persistent index store for a database.
+        """
+
+        return IndexStore(
+            path=f"data/indexes/{database_name}.json"
+        )
