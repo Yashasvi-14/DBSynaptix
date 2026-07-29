@@ -4,6 +4,13 @@ from app.sql.sql_validator import SQLValidator
 from app.sql.sql_repair import SQLRepair
 from app.schemas.database import DatabaseConnectionRequest
 from psycopg import Error as PsycopgError
+from app.config import (
+    DB_HOST,
+    DB_PORT,
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD
+)
 
 def main():
 
@@ -18,7 +25,7 @@ def main():
         port=5432,
         database="northwind",
         username="postgres",
-        password=input("PostgreSQL password: ")
+        password=DB_PASSWORD
     )
 
     question = "List all customer contact names."

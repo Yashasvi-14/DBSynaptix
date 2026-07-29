@@ -59,3 +59,6 @@ data/*.json
 
 # Benchmark generated output
 benchmark/results.csv
+
+# Generated database indexes
+data/index.json

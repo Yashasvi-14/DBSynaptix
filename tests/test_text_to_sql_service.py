@@ -3,15 +3,18 @@ import json
 import time
 
 from app.services.text_to_sql_service import TextToSQLService
-from app.services.database_service import DatabaseService
 
-from app.knowledge.knowledge_builder import KnowledgeBuilder
-from app.knowledge.knowledge_store import KnowledgeStore
-
-from app.indexing.document_builder import DocumentBuilder
-from app.indexing.embedding_builder import EmbeddingBuilder
+from app.services.indexing_service import IndexingService
 
 from app.schemas.database import DatabaseConnectionRequest
+
+from app.config import (
+    DB_HOST,
+    DB_PORT,
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD
+)
 
 
 def load_questions():
@@ -30,43 +33,30 @@ def main():
     # ==========================================================
 
     request = DatabaseConnectionRequest(
-        host="localhost",
-        port=5432,
-        database="northwind",
-        username="postgres",
-        password="Yash@1403"
+        host=DB_HOST,
+        port=DB_PORT,
+        database=DB_NAME,
+        username=DB_USER,
+        password=DB_PASSWORD
     )
 
     # ==========================================================
-    # Build Offline Index
+    # Load Persistent Index
     # ==========================================================
 
     print("=" * 80)
-    print("BUILDING OFFLINE INDEX")
+    print("LOADING PERSISTENT INDEX")
     print("=" * 80)
 
-    database_service = DatabaseService()
+    indexing_service = IndexingService()
 
-    schema = database_service.get_schema(request).data
+    documents = indexing_service.load_index()
 
-    knowledge_store = KnowledgeStore()
-
-    knowledge_builder = KnowledgeBuilder()
-
-    knowledge = knowledge_builder.build_database_knowledge(schema)
-
-    document_builder = DocumentBuilder()
-
-    documents = document_builder.build(
-        schema,
-        knowledge
+    print(
+        f"\nPersistent index loaded successfully "
+        f"({len(documents)} documents).\n"
     )
-
-    embedding_builder = EmbeddingBuilder()
-
-    documents = embedding_builder.build_embeddings(documents)
-
-    print("\n✓ Offline index built successfully.\n")
+    
 
     # ==========================================================
     # Initialize Text-to-SQL Service

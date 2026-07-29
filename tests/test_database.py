@@ -3,16 +3,23 @@ from app.database.connection import (
     get_primary_keys,
     get_foreign_keys
 )
+from app.config import (
+    DB_HOST,
+    DB_PORT,
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD
+)
 
 from app.schemas.database import DatabaseConnectionRequest
 
 
 request = DatabaseConnectionRequest(
-    host="localhost",
-    port=5432,
-    database="DB-BlackBox",
-    username="postgres",
-    password="Yash@1403"
+    host=DB_HOST,
+    port=DB_PORT,
+    database=DB_NAME,
+    username=DB_USER,
+    password=DB_PASSWORD
 )
 
 
