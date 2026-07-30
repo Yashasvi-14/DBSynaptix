@@ -279,15 +279,24 @@ export default function WorkspacePage() {
             </span>
           </Link>
 
-          {connection && (
-            <div className="flex items-center gap-3 text-sm">
-              <span className="h-2 w-2 rounded-full bg-success" />
+          <div className="flex items-center gap-6">
+            <Link
+              href="/benchmarks"
+              className="text-sm text-foreground-secondary transition hover:text-foreground"
+            >
+              Benchmarks
+            </Link>
 
-              <span className="text-foreground-secondary">Connected to</span>
+            {connection && (
+              <div className="flex items-center gap-3 text-sm">
+                <span className="h-2 w-2 rounded-full bg-success" />
 
-              <span className="font-medium">{connection.database}</span>
-            </div>
-          )}
+                <span className="text-foreground-secondary">Connected to</span>
+
+                <span className="font-medium">{connection.database}</span>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
       <div className="mx-auto flex max-w-[1600px]">

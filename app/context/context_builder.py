@@ -11,7 +11,8 @@ class ContextBuilder:
         self,
         retrieval_results,
         documents,
-        top_k=3
+        top_k=3,
+        max_depth=1
     ):
         """
         Expand retrieved tables with related tables.
@@ -57,25 +58,26 @@ class ContextBuilder:
             )
 
         
-        # Expand using foreign keys
+        for _ in range(max_depth):
+            previous_count = len(selected_tables)
 
-        self.expand_parent_tables(
-            expanded_documents,
-            selected_tables,
-            document_lookup
-        )
+            self.expand_parent_tables(
+                expanded_documents,
+                selected_tables,
+                document_lookup
+            )
 
-        
-        # Expand reverse relationships
-        
-        self.expand_child_tables(
-            expanded_documents,
-            selected_tables,
-            documents
-        )
+            self.expand_child_tables(
+                expanded_documents,
+                selected_tables,
+                documents
+            )
+
+            if len(selected_tables) == previous_count:
+                break
 
         return expanded_documents
-
+ 
     def expand_parent_tables(
         self,
         expanded_documents,

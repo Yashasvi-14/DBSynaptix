@@ -1,0 +1,87 @@
+{
+  "overall": {
+    "questions": 20,
+    "retrieval_recall": 0.8591666666666666,
+    "context_recall": 0.9733333333333333,
+    "context_ratio": 0.4642857142857143,
+    "perfect_retrieval_cases": 13,
+    "perfect_context_cases": 18,
+    "context_precision": 0.3662896825396825
+  },
+  "by_difficulty": {
+    "easy": {
+      "questions": 5,
+      "retrieval_recall": 1.0,
+      "context_recall": 1.0,
+      "context_ratio": 0.4,
+      "perfect_retrieval_cases": 5,
+      "perfect_context_cases": 5,
+      "context_precision": 0.18833333333333332
+    },
+    "medium": {
+      "questions": 5,
+      "retrieval_recall": 1.0,
+      "context_recall": 1.0,
+      "context_ratio": 0.5142857142857143,
+      "perfect_retrieval_cases": 5,
+      "perfect_context_cases": 5,
+      "context_precision": 0.26015873015873014
+    },
+    "hard": {
+      "questions": 5,
+      "retrieval_recall": 0.7333333333333333,
+      "context_recall": 0.9333333333333333,
+      "context_ratio": 0.5142857142857143,
+      "perfect_retrieval_cases": 2,
+      "perfect_context_cases": 4,
+      "context_precision": 0.40166666666666667
+    },
+    "complex": {
+      "questions": 5,
+      "retrieval_recall": 0.7033333333333334,
+      "context_recall": 0.96,
+      "context_ratio": 0.42857142857142855,
+      "perfect_retrieval_cases": 1,
+      "perfect_context_cases": 4,
+      "context_precision": 0.615
+    }
+  },
+  "by_category": {
+    "single_table": {
+      "questions": 5,
+      "retrieval_recall": 1.0,
+      "context_recall": 1.0,
+      "context_ratio": 0.4,
+      "perfect_retrieval_cases": 5,
+      "perfect_context_cases": 5,
+      "context_precision": 0.18833333333333332
+    },
+    "aggregation": {
+      "questions": 5,
+      "retrieval_recall": 1.0,
+      "context_recall": 1.0,
+      "context_ratio": 0.5142857142857143,
+      "perfect_retrieval_cases": 5,
+      "perfect_context_cases": 5,
+      "context_precision": 0.26015873015873014
+    },
+    "multi_table": {
+      "questions": 5,
+      "retrieval_recall": 0.7333333333333333,
+      "context_recall": 0.9333333333333333,
+      "context_ratio": 0.5142857142857143,
+      "perfect_retrieval_cases": 2,
+      "perfect_context_cases": 4,
+      "context_precision": 0.40166666666666667
+    },
+    "relationship": {
+      "questions": 5,
+      "retrieval_recall": 0.7033333333333334,
+      "context_recall": 0.96,
+      "context_ratio": 0.42857142857142855,
+      "perfect_retrieval_cases": 1,
+      "perfect_context_cases": 4,
+      "context_precision": 0.615
+    }
+  }
+}

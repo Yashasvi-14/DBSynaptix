@@ -1,0 +1,117 @@
+[
+  {
+    "id": "B001",
+    "difficulty": "easy",
+    "category": "single_table",
+    "question": "List the top 5 products by unit price",
+    "result_correct": true,
+    "execution_success": true,
+    "error": null,
+    "sql": "SELECT product_name, unit_price FROM PRODUCTS ORDER BY unit_price DESC LIMIT 5;",
+    "row_count": 5,
+    "repair_attempted": false,
+    "repair_successful": false,
+    "prompt_tokens": 1902,
+    "completion_tokens": 20,
+    "total_tokens": 1922,
+    "timings": {
+      "retrieval_ms": 1146.79,
+      "context_ms": 0.06,
+      "generation_ms": 1316.23,
+      "execution_ms": 127.97,
+      "total_ms": 2591.16
+    }
+  },
+  {
+    "id": "B002",
+    "difficulty": "easy",
+    "category": "single_table",
+    "question": "List all customers from Germany",
+    "result_correct": false,
+    "execution_success": true,
+    "error": null,
+    "sql": "SELECT * FROM CUSTOMERS WHERE country = 'Germany';",
+    "row_count": 11,
+    "repair_attempted": false,
+    "repair_successful": false,
+    "prompt_tokens": 1409,
+    "completion_tokens": 11,
+    "total_tokens": 1420,
+    "timings": {
+      "retrieval_ms": 722.34,
+      "context_ms": 0.07,
+      "generation_ms": 1238.41,
+      "execution_ms": 105.97,
+      "total_ms": 2066.9
+    }
+  },
+  {
+    "id": "B003",
+    "difficulty": "easy",
+    "category": "single_table",
+    "question": "Show all discontinued products",
+    "result_correct": false,
+    "execution_success": true,
+    "error": null,
+    "sql": "SELECT * FROM PRODUCTS WHERE discontinued = 1",
+    "row_count": 10,
+    "repair_attempted": false,
+    "repair_successful": false,
+    "prompt_tokens": 1897,
+    "completion_tokens": 9,
+    "total_tokens": 1906,
+    "timings": {
+      "retrieval_ms": 685.81,
+      "context_ms": 0.05,
+      "generation_ms": 1027.04,
+      "execution_ms": 119.25,
+      "total_ms": 1832.23
+    }
+  },
+  {
+    "id": "B004",
+    "difficulty": "easy",
+    "category": "single_table",
+    "question": "List employees ordered by hire date",
+    "result_correct": false,
+    "execution_success": true,
+    "error": null,
+    "sql": "SELECT employee_id, last_name, first_name, hire_date FROM employees ORDER BY hire_date ASC;",
+    "row_count": 9,
+    "repair_attempted": false,
+    "repair_successful": false,
+    "prompt_tokens": 2656,
+    "completion_tokens": 25,
+    "total_tokens": 2681,
+    "timings": {
+      "retrieval_ms": 610.89,
+      "context_ms": 0.06,
+      "generation_ms": 1012.76,
+      "execution_ms": 118.97,
+      "total_ms": 1742.76
+    }
+  },
+  {
+    "id": "B005",
+    "difficulty": "easy",
+    "category": "single_table",
+    "question": "Show suppliers located in the USA",
+    "result_correct": false,
+    "execution_success": true,
+    "error": null,
+    "sql": "SELECT * FROM SUPPLIERS WHERE country = 'USA'",
+    "row_count": 4,
+    "repair_attempted": false,
+    "repair_successful": false,
+    "prompt_tokens": 2067,
+    "completion_tokens": 12,
+    "total_tokens": 2079,
+    "timings": {
+      "retrieval_ms": 618.04,
+      "context_ms": 0.06,
+      "generation_ms": 1001.1,
+      "execution_ms": 132.4,
+      "total_ms": 1751.69
+    }
+  }
+]
