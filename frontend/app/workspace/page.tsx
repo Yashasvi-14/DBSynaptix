@@ -49,6 +49,12 @@ type QueryResponse = {
     total_ms: number;
   };
 };
+
+type QueryHistoryItem = {
+  id: number;
+  response: QueryResponse;
+};
+
 function subscribe() {
   return () => {};
 }
@@ -130,9 +136,7 @@ function PipelineStep({
             ✓
           </span>
 
-          <span className="text-sm font-medium">
-            {title}
-          </span>
+          <span className="text-sm font-medium">{title}</span>
         </div>
 
         <span className="shrink-0 font-mono text-xs text-foreground-muted">
@@ -140,13 +144,10 @@ function PipelineStep({
         </span>
       </div>
 
-      <p className="mt-2 pl-8 text-xs text-foreground-muted">
-        {description}
-      </p>
+      <p className="mt-2 pl-8 text-xs text-foreground-muted">{description}</p>
     </div>
   );
 }
-
 
 export default function WorkspacePage() {
   const storedConnection = useSyncExternalStore(
@@ -191,6 +192,8 @@ export default function WorkspacePage() {
   const [activeTab, setActiveTab] = useState<"results" | "sql" | "pipeline">(
     "results",
   );
+
+  const [queryHistory, setQueryHistory] = useState<QueryHistoryItem[]>([]);
 
   function toggleTable(tableName: string) {
     setExpandedTables((current) => {
@@ -239,6 +242,13 @@ export default function WorkspacePage() {
       }
 
       setResponse(data);
+      setQueryHistory((current) => [
+        {
+          id: Date.now(),
+          response: data,
+        },
+        ...current,
+      ]);
     } catch (error) {
       setError(
         error instanceof Error ? error.message : "Failed to execute query.",
@@ -246,6 +256,12 @@ export default function WorkspacePage() {
     } finally {
       setLoading(false);
     }
+  }
+  function handleHistorySelect(item: QueryHistoryItem) {
+    setQuestion(item.response.question);
+    setResponse(item.response);
+    setActiveTab("results");
+    setError("");
   }
 
   return (
@@ -409,6 +425,63 @@ export default function WorkspacePage() {
               </button>
             </div>
           </div>
+
+          {queryHistory.length > 0 && (
+            <div className="mt-6 rounded-2xl border border-border bg-surface">
+              <div className="flex items-center justify-between border-b border-border px-6 py-4">
+                <div>
+                  <h2 className="text-sm font-medium">Query History</h2>
+
+                  <p className="mt-1 text-xs text-foreground-muted">
+                    Queries from this session
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setQueryHistory([])}
+                  className="text-xs text-foreground-muted transition hover:text-foreground"
+                >
+                  Clear
+                </button>
+              </div>
+
+              <div className="divide-y divide-border">
+                {queryHistory.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleHistorySelect(item)}
+                    className="w-full px-6 py-4 text-left transition hover:bg-background"
+                  >
+                    <div className="flex items-start justify-between gap-6">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium">
+                          {item.response.question}
+                        </p>
+
+                        <p className="mt-2 truncate font-mono text-xs text-foreground-muted">
+                          {item.response.sql}
+                        </p>
+                      </div>
+
+                      <span className="shrink-0 font-mono text-xs text-foreground-muted">
+                        {formatDuration(item.response.timings.total_ms)}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap gap-4 text-xs text-foreground-muted">
+                      <span>{item.response.results.length} rows</span>
+
+                      <span>{item.response.total_tokens} tokens</span>
+
+                      {item.response.repair_attempted && (
+                        <span>SQL repaired</span>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Query Error */}
           {error && (
