@@ -63,3 +63,6 @@ benchmark/results.csv
 # Generated database indexes
 data/index.json
 data/indexes/
+
+# Generated knowledge artifacts
+knowledge.json

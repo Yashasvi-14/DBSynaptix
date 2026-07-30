@@ -104,6 +104,38 @@ export default function ConnectPage() {
         );
       }
 
+      const schemaResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/database/schema`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            host: form.host,
+            port: Number(form.port),
+            database: form.database,
+            username: form.username,
+            password: form.password,
+          }),
+        }
+      );
+
+      const schemaData = await schemaResponse.json();
+
+      if (!schemaResponse.ok || schemaData.success === false) {
+        throw new Error(
+          schemaData.detail ||
+            schemaData.message ||
+            "Failed to retrieve database schema."
+        );
+      }
+
+      sessionStorage.setItem(
+        "dbsynaptix_schema",
+        JSON.stringify(schemaData.data)
+      );
+
       sessionStorage.setItem(
         "dbsynaptix_connection",
         JSON.stringify({

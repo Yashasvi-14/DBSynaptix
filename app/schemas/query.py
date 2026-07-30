@@ -13,7 +13,12 @@ class QueryRequest(BaseModel):
     question: str
     database: DatabaseConnectionRequest
 
-
+class PipelineTimings(BaseModel):
+    retrieval_ms: float
+    context_ms: float
+    generation_ms: float
+    execution_ms: float
+    total_ms: float
 class QueryResponse(BaseModel):
     """
     Response produced by the Text-to-SQL pipeline.
@@ -29,3 +34,6 @@ class QueryResponse(BaseModel):
     prompt_tokens: int
     completion_tokens: int
     total_tokens: int
+
+    timings: PipelineTimings
+

@@ -1,187 +1,63 @@
-from app.knowledge.knowledge_builder import KnowledgeBuilder
-from app.knowledge.knowledge_store import KnowledgeStore
-from app.indexing.document_builder import DocumentBuilder
+from unittest.mock import MagicMock
+
 from app.indexing.embedding_builder import EmbeddingBuilder
 
-schema = {
 
-    "customers": {
+def test_build_embeddings():
+    builder = EmbeddingBuilder()
 
-        "columns": [
-            {
-                "name": "id",
-                "type": "integer"
-            },
-            {
-                "name": "name",
-                "type": "varchar"
-            },
-            {
-                "name": "email",
-                "type": "varchar"
-            },
-            {
-                "name": "city",
-                "type": "varchar"
-            }
-        ],
+    # Replace the real AI provider so Gemini is never called.
+    builder.provider = MagicMock()
 
-        "primary_keys": [
-            "id"
-        ],
+    builder.provider.generate_embedding.side_effect = [
+        [0.1, 0.2, 0.3],
+        [0.4, 0.5, 0.6],
+    ]
 
-        "foreign_keys": []
-    },
+    documents = [
+        {
+            "table": "customers",
+            "text": "TABLE: customers",
+            "embedding": None,
+        },
+        {
+            "table": "orders",
+            "text": "TABLE: orders",
+            "embedding": None,
+        },
+    ]
 
-    "orders": {
+    result = builder.build_embeddings(documents)
 
-        "columns": [
-            {
-                "name": "id",
-                "type": "integer"
-            },
-            {
-                "name": "customer_id",
-                "type": "integer"
-            },
-            {
-                "name": "order_date",
-                "type": "date"
-            },
-            {
-                "name": "total_amount",
-                "type": "numeric"
-            }
-        ],
+    assert result[0]["embedding"] == [0.1, 0.2, 0.3]
+    assert result[1]["embedding"] == [0.4, 0.5, 0.6]
 
-        "primary_keys": [
-            "id"
-        ],
+    assert builder.provider.generate_embedding.call_count == 2
 
-        "foreign_keys": [
-            {
-                "column": "customer_id",
-                "references": {
-                    "table": "customers",
-                    "column": "id"
-                }
-            }
-        ]
-    },
+    builder.provider.generate_embedding.assert_any_call(
+        "TABLE: customers"
+    )
 
-    "products": {
-
-        "columns": [
-            {
-                "name": "id",
-                "type": "integer"
-            },
-            {
-                "name": "name",
-                "type": "varchar"
-            },
-            {
-                "name": "category",
-                "type": "varchar"
-            },
-            {
-                "name": "price",
-                "type": "numeric"
-            }
-        ],
-
-        "primary_keys": [
-            "id"
-        ],
-
-        "foreign_keys": []
-    },
-
-    "order_items": {
-
-        "columns": [
-            {
-                "name": "id",
-                "type": "integer"
-            },
-            {
-                "name": "order_id",
-                "type": "integer"
-            },
-            {
-                "name": "product_id",
-                "type": "integer"
-            },
-            {
-                "name": "quantity",
-                "type": "integer"
-            }
-        ],
-
-        "primary_keys": [
-            "id"
-        ],
-
-        "foreign_keys": [
-            {
-                "column": "order_id",
-                "references": {
-                    "table": "orders",
-                    "column": "id"
-                }
-            },
-            {
-                "column": "product_id",
-                "references": {
-                    "table": "products",
-                    "column": "id"
-                }
-            }
-        ]
-    }
-
-}
-
-knowledge_builder = KnowledgeBuilder()
-
-knowledge = knowledge_builder.build_database_knowledge(
-    schema
-)
-
-store = KnowledgeStore()
-
-for table in knowledge.values():
-    store.add(table)
+    builder.provider.generate_embedding.assert_any_call(
+        "TABLE: orders"
+    )
 
 
+def test_existing_embedding_is_reused():
+    builder = EmbeddingBuilder()
 
-document_builder = DocumentBuilder()
+    builder.provider = MagicMock()
 
-documents = document_builder.build(
-    schema,
-    store
-)
+    documents = [
+        {
+            "table": "customers",
+            "text": "TABLE: customers",
+            "embedding": [0.1, 0.2, 0.3],
+        }
+    ]
 
+    result = builder.build_embeddings(documents)
 
+    assert result[0]["embedding"] == [0.1, 0.2, 0.3]
 
-
-embedding_builder = EmbeddingBuilder()
-
-documents = embedding_builder.build_embeddings(
-    documents
-)
-
-
-
-
-for document in documents:
-
-    print("=" * 70)
-
-    print(f"TABLE : {document['table']}")
-
-    print(f"Embedding Length : {len(document['embedding'])}")
-
-    print(f"First 5 Values : {document['embedding'][:5]}")
-
-    print()
+    builder.provider.generate_embedding.assert_not_called()

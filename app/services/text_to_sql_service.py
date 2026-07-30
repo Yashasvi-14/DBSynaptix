@@ -6,7 +6,7 @@ from app.context.context_builder import ContextBuilder
 from app.sql.prompt_builder import PromptBuilder
 from app.sql.sql_repair import SQLRepair
 from psycopg import Error as PsycopgError
-
+from time import perf_counter
 class TextToSQLService:
 
     def __init__(self):
@@ -31,16 +31,33 @@ class TextToSQLService:
         request,
         documents
     ):
+
+        timings = {}
+        pipeline_start = perf_counter()
         # Retrieve relevant schema documents
+        start = perf_counter()
+
         retrieved = self.retriever.retrieve(
             documents,
             question
         )
 
+        timings["retrieval_ms"] = round(
+        (perf_counter() - start) * 1000,
+        2
+        )
+
         # Expand retrieved context using database relationships
+        start = perf_counter()
+
         context = self.context_builder.expand(
             retrieved,
             documents
+        )
+
+        timings["context_ms"] = round(
+            (perf_counter() - start) * 1000,
+            2
         )
 
         # Build generation prompt
@@ -50,6 +67,8 @@ class TextToSQLService:
         )
 
         # Generate initial SQL
+        start = perf_counter()
+
         llm_response = self.ai.generate_text_with_metadata(
             prompt
         )
@@ -58,14 +77,26 @@ class TextToSQLService:
             llm_response.text
         )
 
+        timings["generation_ms"] = round(
+            (perf_counter() - start) * 1000,
+            2
+        )
+
         repair_attempted = False
         repair_successful = False
 
         try:
             # First execution attempt
+            start = perf_counter()
+
             results = self.executor.execute(
                 sql,
                 request
+            )
+
+            timings["execution_ms"] = round(
+                (perf_counter() - start) * 1000,
+                2
             )
 
         except PsycopgError as execution_error:
@@ -89,9 +120,16 @@ class TextToSQLService:
 
             # Exactly one retry.
             # If this fails, the exception propagates normally.
+            start = perf_counter()
+
             results = self.executor.execute(
                 repaired_sql,
                 request
+            )
+
+            timings["execution_ms"] = round(
+                (perf_counter() - start) * 1000,
+                2
             )
 
             sql = repaired_sql
@@ -126,6 +164,11 @@ class TextToSQLService:
                 llm_response.usage_metadata.total_token_count
             )
 
+        timings["total_ms"] = round(
+            (perf_counter() - pipeline_start) * 1000,
+            2
+        )
+
         return {
             "question": question,
             "sql": sql,
@@ -136,5 +179,7 @@ class TextToSQLService:
 
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
-            "total_tokens": total_tokens
+            "total_tokens": total_tokens,
+
+            "timings": timings
         }
