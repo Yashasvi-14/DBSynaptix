@@ -623,8 +623,35 @@ LIMIT 5;`}</code>
 
           <footer className="mt-16 flex flex-col gap-4 border-t border-border pt-8 text-sm text-foreground-muted sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <span className="font-medium text-foreground">DBSynaptix</span>
-              <span className="ml-3">Giving Data a Brain.</span>
+              <div>
+                <span className="font-medium text-foreground">DBSynaptix</span>
+                <span className="ml-3">Giving Data a Brain.</span>
+              </div>
+
+              <div className="mt-2 flex items-center gap-3">
+                <span>Built by Yashasvi Tekriwal</span>
+
+                <span className="text-border">•</span>
+
+                <a
+                  href="https://github.com/Yashasvi-14"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition hover:text-foreground"
+                >
+                  GitHub
+                </a>
+                <span className="text-border">•</span>
+
+                <a
+                  href="https://www.linkedin.com/in/yashasvi-tekriwal/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition hover:text-foreground"
+                >
+                  LinkedIn
+                </a>
+              </div>
             </div>
 
             <div className="flex gap-6">
