@@ -5,6 +5,11 @@
 <p align="center">
   <strong>Giving Data a Brain.</strong>
 </p>
+<p align="center">
+  <a href="https://db-synaptix.vercel.app/"><strong>Live Demo</strong></a>
+  &nbsp;•&nbsp;
+  <a href="https://dbsynaptix.onrender.com/docs"><strong>API Docs</strong></a>
+</p>
 
 <p align="center">
   Retrieval-driven Text-to-SQL for PostgreSQL with semantic schema understanding,
@@ -139,6 +144,31 @@ Only the resulting focused context is sent to Gemini for SQL generation.
 Generated SQL is validated and executed against PostgreSQL. If PostgreSQL returns an execution error, the failed SQL, database error, question, and schema context are supplied to the repair pipeline for **one controlled retry**.
 
 The pipeline also records retrieval, context construction, generation, execution, and total latency together with token usage and repair metadata.
+
+---
+
+### Production Deployment
+
+```text
+Browser
+   |
+   v
+Next.js Frontend
+Vercel
+   |
+   v
+FastAPI Backend
+Render
+   |
+   +--------> Google Gemini
+   |          Generation + Embeddings
+   |
+   v
+PostgreSQL
+Neon
+```
+
+The production frontend communicates with the FastAPI service over HTTPS. Database connections and AI operations are handled by the backend, while PostgreSQL is hosted separately on Neon.
 
 ---
 
