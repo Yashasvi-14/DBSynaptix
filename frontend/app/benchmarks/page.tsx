@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const difficultyMetrics = [
   {
@@ -58,11 +59,7 @@ const headlineMetrics = [
   },
 ];
 
-function MetricBar({
-  value,
-}: {
-  value: number;
-}) {
+function MetricBar({ value }: { value: number }) {
   return (
     <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
       <div
@@ -78,11 +75,19 @@ export default function BenchmarksPage() {
     <main className="min-h-screen bg-background text-foreground">
       <header className="border-b border-white/10">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link
-            href="/"
-            className="text-lg font-semibold tracking-tight"
-          >
-            DBSynaptix
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/dbsynaptix-icon.png"
+              alt=""
+              width={98}
+              height={98}
+              priority
+              className="h-24 w-24 object-contain"
+            />
+
+            <span className="text-lg font-semibold tracking-tight">
+              DBSynaptix
+            </span>
           </Link>
 
           <nav className="flex items-center gap-6 text-sm text-foreground-muted">
@@ -93,9 +98,7 @@ export default function BenchmarksPage() {
               Workspace
             </Link>
 
-            <span className="text-foreground">
-              Benchmarks
-            </span>
+            <span className="text-foreground">Benchmarks</span>
 
             <Link
               href="/connect"
@@ -118,8 +121,8 @@ export default function BenchmarksPage() {
           </h1>
 
           <p className="mt-5 text-lg leading-8 text-foreground-muted">
-            Measuring how effectively DBSynaptix retrieves relevant
-            schema and constructs database context before SQL generation.
+            Measuring how effectively DBSynaptix retrieves relevant schema and
+            constructs database context before SQL generation.
           </p>
         </div>
 
@@ -133,9 +136,7 @@ export default function BenchmarksPage() {
                 {metric.value}
               </p>
 
-              <p className="mt-2 font-medium">
-                {metric.label}
-              </p>
+              <p className="mt-2 font-medium">{metric.label}</p>
 
               <p className="mt-1 text-sm text-foreground-muted">
                 {metric.detail}
@@ -146,14 +147,10 @@ export default function BenchmarksPage() {
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-            <p className="text-sm text-foreground-muted">
-              Perfect retrieval
-            </p>
+            <p className="text-sm text-foreground-muted">Perfect retrieval</p>
 
             <div className="mt-2 flex items-end justify-between">
-              <p className="text-3xl font-semibold">
-                13 / 20
-              </p>
+              <p className="text-3xl font-semibold">13 / 20</p>
               <p className="text-sm text-foreground-muted">
                 65% of benchmark queries
               </p>
@@ -161,14 +158,10 @@ export default function BenchmarksPage() {
           </div>
 
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-            <p className="text-sm text-foreground-muted">
-              Perfect context
-            </p>
+            <p className="text-sm text-foreground-muted">Perfect context</p>
 
             <div className="mt-2 flex items-end justify-between">
-              <p className="text-3xl font-semibold">
-                18 / 20
-              </p>
+              <p className="text-3xl font-semibold">18 / 20</p>
               <p className="text-sm text-foreground-muted">
                 90% of benchmark queries
               </p>
@@ -202,9 +195,7 @@ export default function BenchmarksPage() {
                 className="grid gap-5 border-b border-white/10 px-6 py-6 last:border-b-0 md:grid-cols-[1.4fr_1fr_1fr_1fr_0.7fr] md:items-center md:gap-6"
               >
                 <div>
-                  <p className="font-medium">
-                    {metric.name}
-                  </p>
+                  <p className="font-medium">{metric.name}</p>
                   <p className="mt-1 text-sm text-foreground-muted">
                     {metric.description}
                   </p>
@@ -253,21 +244,18 @@ export default function BenchmarksPage() {
 
         <section className="mt-16 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
-            <p className="text-sm font-medium text-primary">
-              Methodology
-            </p>
+            <p className="text-sm font-medium text-primary">Methodology</p>
 
             <h2 className="mt-2 text-2xl font-semibold">
               What this benchmark measures
             </h2>
 
             <p className="mt-4 leading-7 text-foreground-muted">
-              Twenty natural-language questions are evaluated against
-              the Northwind schema. Each question defines the tables
-              required to answer it. DBSynaptix performs hybrid
-              retrieval and relationship-aware context expansion, then
-              the retrieved and final context tables are compared with
-              those expected tables.
+              Twenty natural-language questions are evaluated against the
+              Northwind schema. Each question defines the tables required to
+              answer it. DBSynaptix performs hybrid retrieval and
+              relationship-aware context expansion, then the retrieved and final
+              context tables are compared with those expected tables.
             </p>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-3">
@@ -281,9 +269,7 @@ export default function BenchmarksPage() {
                   className="rounded-xl border border-white/10 p-4"
                 >
                   <p className="text-xl font-semibold">{value}</p>
-                  <p className="mt-1 text-sm text-foreground-muted">
-                    {label}
-                  </p>
+                  <p className="mt-1 text-sm text-foreground-muted">{label}</p>
                 </div>
               ))}
             </div>
@@ -294,13 +280,11 @@ export default function BenchmarksPage() {
               Schema context used
             </p>
 
-            <p className="mt-4 text-4xl font-semibold">
-              46.43%
-            </p>
+            <p className="mt-4 text-4xl font-semibold">46.43%</p>
 
             <p className="mt-2 text-sm text-foreground-muted">
-              Average portion of the 14-table schema supplied to SQL
-              generation while maintaining 97.33% context recall.
+              Average portion of the 14-table schema supplied to SQL generation
+              while maintaining 97.33% context recall.
             </p>
 
             <div className="mt-6">
@@ -308,16 +292,16 @@ export default function BenchmarksPage() {
             </div>
 
             <p className="mt-6 leading-7 text-foreground-muted">
-              The objective is not to send the entire schema to the
-              model. Retrieval narrows the schema while relationship
-              expansion recovers tables needed for joins.
+              The objective is not to send the entire schema to the model.
+              Retrieval narrows the schema while relationship expansion recovers
+              tables needed for joins.
             </p>
           </div>
         </section>
 
         <div className="mt-16 border-t border-white/10 pt-8 text-sm text-foreground-muted">
-          Benchmark results reflect retrieval and schema-context
-          performance. They do not represent end-to-end SQL accuracy.
+          Benchmark results reflect retrieval and schema-context performance.
+          They do not represent end-to-end SQL accuracy.
         </div>
       </section>
     </main>

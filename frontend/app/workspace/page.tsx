@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useSyncExternalStore } from "react";
 
 type DatabaseConnection = {
@@ -270,9 +271,14 @@ export default function WorkspacePage() {
       <nav className="border-b border-border">
         <div className="mx-auto flex h-18 max-w-[1600px] items-center justify-between px-8">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary font-semibold text-white">
-              D
-            </div>
+            <Image
+              src="/dbsynaptix-icon.png"
+              alt=""
+              width={98}
+              height={98}
+              priority
+              className="h-24 w-24 object-contain"
+            />
 
             <span className="text-lg font-semibold tracking-tight">
               DBSynaptix

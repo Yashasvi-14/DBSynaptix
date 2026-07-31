@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -47,16 +48,14 @@ export default function ConnectPage() {
             username: form.username,
             password: form.password,
           }),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok || data.success === false) {
         throw new Error(
-          data.detail ||
-          data.message ||
-          "Failed to connect to database."
+          data.detail || data.message || "Failed to connect to database.",
         );
       }
 
@@ -65,7 +64,7 @@ export default function ConnectPage() {
       setError(
         error instanceof Error
           ? error.message
-          : "Failed to connect to database."
+          : "Failed to connect to database.",
       );
     } finally {
       setLoading(false);
@@ -91,16 +90,14 @@ export default function ConnectPage() {
             username: form.username,
             password: form.password,
           }),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok || data.success === false) {
         throw new Error(
-          data.detail ||
-          data.message ||
-          "Failed to index database."
+          data.detail || data.message || "Failed to index database.",
         );
       }
 
@@ -118,7 +115,7 @@ export default function ConnectPage() {
             username: form.username,
             password: form.password,
           }),
-        }
+        },
       );
 
       const schemaData = await schemaResponse.json();
@@ -127,13 +124,13 @@ export default function ConnectPage() {
         throw new Error(
           schemaData.detail ||
             schemaData.message ||
-            "Failed to retrieve database schema."
+            "Failed to retrieve database schema.",
         );
       }
 
       sessionStorage.setItem(
         "dbsynaptix_schema",
-        JSON.stringify(schemaData.data)
+        JSON.stringify(schemaData.data),
       );
 
       sessionStorage.setItem(
@@ -144,15 +141,13 @@ export default function ConnectPage() {
           database: form.database,
           username: form.username,
           password: form.password,
-        })
+        }),
       );
 
       router.push("/workspace");
     } catch (error) {
       setError(
-        error instanceof Error
-          ? error.message
-          : "Failed to index database."
+        error instanceof Error ? error.message : "Failed to index database.",
       );
     } finally {
       setIndexing(false);
@@ -167,9 +162,14 @@ export default function ConnectPage() {
       <nav className="border-b border-border">
         <div className="mx-auto flex h-18 max-w-[1600px] items-center px-8">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary font-semibold text-white">
-              D
-            </div>
+            <Image
+              src="/dbsynaptix-icon.png"
+              alt=""
+              width={98}
+              height={98}
+              priority
+              className="h-24 w-24 object-contain"
+            />
 
             <span className="text-lg font-semibold tracking-tight">
               DBSynaptix
@@ -189,8 +189,8 @@ export default function ConnectPage() {
           </h1>
 
           <p className="mt-6 max-w-lg text-lg leading-8 text-foreground-secondary">
-            Connect PostgreSQL to build a semantic representation of your
-            schema and start querying your data with natural language.
+            Connect PostgreSQL to build a semantic representation of your schema
+            and start querying your data with natural language.
           </p>
 
           <div className="mt-10 space-y-5 text-sm text-foreground-secondary">
@@ -216,9 +216,7 @@ export default function ConnectPage() {
                 Host
                 <input
                   value={form.host}
-                  onChange={(event) =>
-                    updateField("host", event.target.value)
-                  }
+                  onChange={(event) => updateField("host", event.target.value)}
                   className={inputClass}
                   placeholder="localhost"
                   required
@@ -230,9 +228,7 @@ export default function ConnectPage() {
                 <input
                   type="number"
                   value={form.port}
-                  onChange={(event) =>
-                    updateField("port", event.target.value)
-                  }
+                  onChange={(event) => updateField("port", event.target.value)}
                   className={inputClass}
                   placeholder="5432"
                   required
@@ -305,9 +301,7 @@ export default function ConnectPage() {
                   disabled={indexing}
                   className="w-full rounded-xl border border-primary/40 bg-primary/10 px-5 py-3 text-sm font-medium text-primary transition hover:bg-primary/15 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {indexing
-                    ? "Building semantic index..."
-                    : "Index Database"}
+                  {indexing ? "Building semantic index..." : "Index Database"}
                 </button>
               </div>
             )}
@@ -322,18 +316,10 @@ export default function ConnectPage() {
   );
 }
 
-function Feature({
-  number,
-  text,
-}: {
-  number: string;
-  text: string;
-}) {
+function Feature({ number, text }: { number: string; text: string }) {
   return (
     <div className="flex items-center gap-4">
-      <span className="font-mono text-xs text-foreground-muted">
-        {number}
-      </span>
+      <span className="font-mono text-xs text-foreground-muted">{number}</span>
 
       <span>{text}</span>
     </div>
